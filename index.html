@@ -1,0 +1,897 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>현장 체크리스트</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one phone-width column of numbered panels mirroring the paper form, sticky action dock at the bottom */
+:root {
+  --bg: #EEF2EF;
+  --surface: #FFFFFF;
+  --field: #FAFBFA;
+  --ink: #17231E;
+  --muted: #5B6A63;
+  --line: #DCE3DF;
+  --line-strong: #BCC8C2;
+  --brand: #1F5240;
+  --brand-soft: #E3EEE8;
+  --on-brand: #FFFFFF;
+  --danger: #B3261E;
+  --danger-soft: #FBEAE8;
+  --lv-low: #E6F1EA;
+  --lv-mid: #F7EDD2;
+  --lv-high: #F7DEDA;
+  --focus: #2F7D61;
+  --scrim: rgba(10, 20, 15, .55);
+  --font: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F1613; --surface: #17211D; --field: #1C2823; --ink: #E4ECE8; --muted: #9AABA3;
+    --line: #2A3732; --line-strong: #3C4C45; --brand: #5FB592; --brand-soft: #1F3329; --on-brand: #0D1A14;
+    --danger: #F08A80; --danger-soft: #3A1E1B; --lv-low: #1E3328; --lv-mid: #3A3220; --lv-high: #3E2422;
+    --focus: #7FD1AE; --scrim: rgba(0, 0, 0, .7); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F1613; --surface: #17211D; --field: #1C2823; --ink: #E4ECE8; --muted: #9AABA3;
+  --line: #2A3732; --line-strong: #3C4C45; --brand: #5FB592; --brand-soft: #1F3329; --on-brand: #0D1A14;
+  --danger: #F08A80; --danger-soft: #3A1E1B; --lv-low: #1E3328; --lv-mid: #3A3220; --lv-high: #3E2422;
+  --focus: #7FD1AE; --scrim: rgba(0, 0, 0, .7); color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 140px;
+  -webkit-tap-highlight-color: transparent;
+}
+.wrap { max-width: 560px; margin: 0 auto; display: grid; gap: 14px; }
+.top { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .04em; color: var(--brand); margin: 0; }
+h1 { font-size: 24px; line-height: 1.25; margin: 2px 0 0; text-wrap: balance; }
+.ghost { font: inherit; font-size: 13px; font-weight: 600; color: var(--muted); background: none; border: 1px solid var(--line-strong); border-radius: 999px; padding: 6px 12px; min-height: 36px; cursor: pointer; white-space: nowrap; }
+.confirm { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; background: var(--danger-soft); color: var(--danger); border-radius: 12px; padding: 10px 12px; font-size: 14px; font-weight: 600; }
+.confirm .sp { flex: 1 1 auto; min-width: 0; }
+
+.rules { margin: 0; padding: 12px 14px; list-style: none; display: grid; gap: 6px; background: var(--brand-soft); border-radius: 14px; counter-reset: r; font-size: 13.5px; }
+.rules li { display: grid; grid-template-columns: 20px 1fr; gap: 8px; counter-increment: r; }
+.rules li::before { content: counter(r); width: 20px; height: 20px; border-radius: 50%; background: var(--brand); color: var(--on-brand); font-size: 11px; font-weight: 700; display: grid; place-items: center; margin-top: 1px; }
+.rules b { font-weight: 700; }
+.rules .no { color: var(--danger); }
+.rules .no::before { background: var(--danger); }
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
+.panel > header { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.panel h2 { font-size: 16px; margin: 0; }
+.num { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%; background: var(--brand); color: var(--on-brand); display: grid; place-items: center; font-size: 13px; font-weight: 700; }
+.hint { margin-left: auto; font-size: 12px; color: var(--muted); text-align: right; line-height: 1.35; }
+.body { padding: 14px 16px 16px; display: grid; gap: 16px; }
+.field { display: grid; gap: 6px; min-width: 0; }
+.k { font-size: 13px; font-weight: 600; color: var(--muted); }
+.k .req { color: var(--danger); margin-left: 2px; }
+.note { font-size: 12.5px; color: var(--muted); margin: 0; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 360px) { .row2 { grid-template-columns: 1fr; } }
+
+input[type="text"], input[type="date"], textarea {
+  width: 100%; min-width: 0; font: inherit; font-size: 16px; color: var(--ink); background: var(--field);
+  border: 1.5px solid var(--line-strong); border-radius: 10px; padding: 0 12px; height: 46px;
+}
+textarea { height: auto; min-height: 88px; padding: 10px 12px; resize: vertical; }
+input:disabled { opacity: .45; }
+input:focus-visible, textarea:focus-visible, button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.unit { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.unit input { flex: 1 1 auto; }
+.unit span { font-weight: 600; flex: 0 0 auto; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip, .seg label, .lvl label { position: relative; }
+.chip input, .seg input, .lvl input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+.chip span {
+  display: inline-flex; align-items: center; gap: 7px; min-height: 44px; padding: 0 14px;
+  border: 1.5px solid var(--line-strong); border-radius: 999px; background: var(--field); font-size: 15px; cursor: pointer; user-select: none;
+}
+.chip span::before { content: ""; width: 15px; height: 15px; border: 1.5px solid currentColor; border-radius: 4px; opacity: .45; flex: 0 0 auto; }
+.chip input:checked + span { background: var(--brand); border-color: var(--brand); color: var(--on-brand); font-weight: 600; }
+.chip input:checked + span::before { content: "✓"; border: 0; opacity: 1; font-size: 14px; line-height: 15px; text-align: center; }
+.chip input:focus-visible + span, .seg input:focus-visible + span, .lvl input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 2px; }
+.chip-x { display: inline-flex; align-items: center; gap: 6px; }
+.chip-x input[type="text"] { width: 76px; height: 44px; text-align: center; padding: 0 6px; }
+.chip-x input.wide { width: 150px; text-align: left; padding: 0 10px; }
+
+.seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; border: 1.5px solid var(--line-strong); border-radius: 12px; overflow: hidden; background: var(--field); }
+.seg label + label { border-left: 1.5px solid var(--line-strong); }
+.seg span { display: grid; place-items: center; min-height: 44px; padding: 0 8px; cursor: pointer; font-size: 15px; text-align: center; }
+.seg input:checked + span { background: var(--brand); color: var(--on-brand); font-weight: 700; }
+
+.step { display: grid; grid-template-columns: 48px 1fr 48px; border: 1.5px solid var(--line-strong); border-radius: 12px; overflow: hidden; background: var(--field); }
+.step button { font: inherit; font-size: 22px; font-weight: 600; color: var(--brand); background: var(--brand-soft); border: 0; cursor: pointer; }
+.step input[type="text"] { border: 0; border-radius: 0; text-align: center; font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; height: 52px; background: transparent; }
+.quick { display: flex; flex-wrap: wrap; gap: 6px; }
+.quick button { font: inherit; font-size: 13px; font-weight: 600; color: var(--muted); background: var(--field); border: 1px solid var(--line-strong); border-radius: 8px; min-height: 36px; padding: 0 12px; cursor: pointer; font-variant-numeric: tabular-nums; }
+
+.comp { display: grid; gap: 8px; }
+.comp-row { display: grid; grid-template-columns: minmax(0, 1fr) 120px; gap: 8px; align-items: center; }
+.comp-row .chip span { width: 100%; }
+.comp-row small { font-weight: 400; opacity: .8; font-size: 12px; }
+
+.lvl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.lvl span { display: grid; place-items: center; min-height: 52px; border-radius: 10px; border: 2px solid transparent; font-size: 16px; font-weight: 600; cursor: pointer; }
+.lvl .t1 span { background: var(--lv-low); }
+.lvl .t2 span { background: var(--lv-mid); }
+.lvl .t3 span { background: var(--lv-high); }
+.lvl input:checked + span { border-color: var(--ink); font-weight: 800; box-shadow: inset 0 0 0 2px var(--surface); }
+.lvl input:checked + span::after { content: " ✓"; }
+.axis { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
+
+.skip { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--danger-soft); color: var(--danger); border-radius: 14px; padding: 10px 14px; font-weight: 700; font-size: 14px; }
+.skip .chip span { border-color: var(--danger); color: var(--danger); background: var(--surface); }
+.skip .chip input:checked + span { background: var(--danger); border-color: var(--danger); color: var(--surface); }
+.skipped { padding: 14px 16px; color: var(--muted); font-size: 14px; }
+
+.base { background: var(--brand-soft); border-radius: 10px; padding: 10px 12px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 14px; }
+.base b { font-weight: 700; }
+.base .mini { display: inline-grid; grid-template-columns: 34px 44px 34px; height: 36px; border: 1px solid var(--line-strong); border-radius: 8px; overflow: hidden; background: var(--field); }
+.base .mini button { font: inherit; font-weight: 700; border: 0; color: var(--brand); background: var(--brand-soft); cursor: pointer; }
+.base .mini input { height: 34px; border: 0; border-radius: 0; text-align: center; font-weight: 700; padding: 0; background: transparent; }
+.base em { font-style: normal; color: var(--muted); font-size: 12px; margin-left: auto; }
+
+.privacy { font-size: 12.5px; color: var(--danger); font-weight: 600; margin: 0; }
+.foot { font-size: 12px; color: var(--muted); text-align: center; margin: 4px 0 0; }
+
+.dock {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--surface); border-top: 1px solid var(--line);
+  padding-top: 10px; padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.dock-in { max-width: 560px; margin: 0 auto; display: flex; align-items: center; gap: 12px; }
+.prog { flex: 0 0 auto; font-size: 13px; color: var(--muted); line-height: 1.3; font-variant-numeric: tabular-nums; }
+.prog b { display: block; font-size: 16px; color: var(--ink); }
+.prog.done b { color: var(--brand); }
+.primary { flex: 1 1 auto; font: inherit; font-size: 16px; font-weight: 700; color: var(--on-brand); background: var(--brand); border: 0; border-radius: 12px; min-height: 52px; cursor: pointer; }
+.secondary { font: inherit; font-size: 15px; font-weight: 700; color: var(--brand); background: var(--brand-soft); border: 0; border-radius: 12px; min-height: 48px; padding: 0 14px; cursor: pointer; }
+
+.sheet { position: fixed; inset: 0; z-index: 30; background: var(--scrim); display: flex; align-items: flex-end; justify-content: center; }
+.sheet-in {
+  background: var(--surface); width: 100%; max-width: 600px; max-height: 100%; overflow-y: auto; border-radius: 18px 18px 0 0;
+  padding-top: calc(18px + env(safe-area-inset-top, 0px)); padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 14px;
+}
+.sheet h3 { margin: 0; font-size: 18px; }
+.miss { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+.miss li { background: var(--danger-soft); color: var(--danger); font-weight: 600; font-size: 14px; border-radius: 999px; padding: 4px 12px; }
+.btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.btns .primary, .btns .secondary { min-height: 50px; }
+.shot { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 10px; display: block; -webkit-touch-callout: default; }
+.howto { margin: 0; padding-left: 18px; font-size: 14px; display: grid; gap: 2px; }
+.status { font-size: 13px; font-weight: 600; color: var(--brand); min-height: 1em; margin: 0; }
+.status.err { color: var(--danger); }
+.fallback { width: 100%; min-height: 160px; font-size: 13px; }
+@media (prefers-reduced-motion: no-preference) {
+  .sheet-in { animation: up .22s ease-out; }
+  @keyframes up { from { transform: translateY(24px); opacity: .6; } to { transform: none; opacity: 1; } }
+}
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <div>
+      <p class="eyebrow">현장 → 계약관리팀(CX)</p>
+      <h1>현장 체크리스트</h1>
+    </div>
+    <button type="button" class="ghost" id="resetBtn">새로 작성</button>
+  </div>
+  <div class="confirm" id="resetBox" hidden>
+    <span class="sp">작성한 내용을 모두 지울까요?</span>
+    <button type="button" class="ghost" id="resetYes">지우기</button>
+    <button type="button" class="ghost" id="resetNo">취소</button>
+  </div>
+
+  <ol class="rules">
+    <li><span><b>도착 즉시</b> 체크리스트 작성 + 사진 → CX 전송</span></li>
+    <li><span>CX <b>"확인"</b> 회신 받고 작업 시작 · 대기 중엔 보양·세팅</span></li>
+    <li class="no"><span><b>금액 안내 금지</b> "사무실에서 확인 후 안내드리도록 하겠습니다"</span></li>
+    <li><span><b>범위변경·당근·용달·추가업무</b>는 보고 → 승인 후</span></li>
+    <li><span><b>사고·클레임</b>은 사진 먼저, 약속 없이 즉시 전화</span></li>
+  </ol>
+
+  <form id="f" autocomplete="off" novalidate>
+  <div class="wrap">
+
+    <section class="panel" id="sec-basic">
+      <header><h2>기본 정보</h2></header>
+      <div class="body">
+        <div class="field">
+          <label class="k" for="date">날짜<span class="req">*</span></label>
+          <input type="date" id="date">
+        </div>
+        <div class="field">
+          <span class="k">주소<span class="req">*</span></span>
+          <div class="row2">
+            <div class="unit"><input type="text" id="gu" placeholder="예: 영통" aria-label="구"><span>구</span></div>
+            <div class="unit"><input type="text" id="dong" placeholder="예: 매탄" aria-label="동"><span>동</span></div>
+          </div>
+        </div>
+        <div class="field" id="sec-type">
+          <span class="k">작업<span class="req">*</span> <small>(해당 모두)</small></span>
+          <div class="chips" id="wtBox"></div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label class="k" for="crew">실작업인원<span class="req">*</span></label>
+            <div class="step">
+              <button type="button" data-step="-1" data-for="crew" aria-label="인원 줄이기">−</button>
+              <input type="text" id="crew" inputmode="numeric" placeholder="0">
+              <button type="button" data-step="1" data-for="crew" aria-label="인원 늘리기">+</button>
+            </div>
+            <span class="note">명</span>
+          </div>
+          <div class="field">
+            <label class="k" for="trucks">적재가능차량</label>
+            <div class="step">
+              <button type="button" data-step="-0.5" data-for="trucks" aria-label="차량 줄이기">−</button>
+              <input type="text" id="trucks" inputmode="decimal" placeholder="0.0">
+              <button type="button" data-step="0.5" data-for="trucks" aria-label="차량 늘리기">+</button>
+            </div>
+            <span class="note">대</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="sec-waste">
+      <header><span class="num">1</span><h2>폐기물 양<span class="req" style="color:var(--danger)">*</span></h2><span class="hint">실제 실릴 양 · 팀장 판단<br>1톤 트럭 기준</span></header>
+      <div class="body">
+        <div class="field">
+          <div class="step">
+            <button type="button" data-step="-0.1" data-for="waste" aria-label="0.1차 줄이기">−</button>
+            <input type="text" id="waste" inputmode="decimal" placeholder="0.0" aria-label="폐기물 양 (차)">
+            <button type="button" data-step="0.1" data-for="waste" aria-label="0.1차 늘리기">+</button>
+          </div>
+          <div class="quick" id="wasteQuick"></div>
+          <p class="note">1톤 트럭 기준 몇 차인지. 예) 1.5차 · 0.3차</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="sec-comp">
+      <header><span class="num">2</span><h2>폐기물 성상</h2><span class="hint">해당 품목 체크 후<br>% 또는 0.1차 기재</span></header>
+      <div class="body"><div class="comp" id="compBox"></div></div>
+    </section>
+
+    <section class="panel" id="sec-route">
+      <header><span class="num">3</span><h2>운반 동선</h2></header>
+      <div class="body">
+        <div class="row2">
+          <div class="field">
+            <span class="k">엘리베이터<span class="req">*</span></span>
+            <div class="seg">
+              <label><input type="radio" name="elev" id="elev_y" value="있음"><span>있음</span></label>
+              <label><input type="radio" name="elev" id="elev_n" value="없음"><span>없음</span></label>
+            </div>
+          </div>
+          <div class="field">
+            <label class="k" for="floor">층수</label>
+            <div class="unit"><input type="text" id="floor" inputmode="numeric" placeholder="0"><span>층</span></div>
+          </div>
+        </div>
+        <div class="field">
+          <span class="k">주차<span class="req">*</span></span>
+          <div class="seg">
+            <label><input type="radio" name="park" id="park_f" value="건물 앞"><span>건물 앞</span></label>
+            <label><input type="radio" name="park" id="park_d" value="거리 있음"><span>거리 있음</span></label>
+          </div>
+          <div class="unit"><input type="text" id="parkDist" inputmode="numeric" placeholder="거리 있음일 때" aria-label="주차 거리" disabled><span>m</span></div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <span class="k">사다리차</span>
+            <div class="seg">
+              <label><input type="radio" name="ladder" id="ladder_y" value="필요"><span>필요</span></label>
+              <label><input type="radio" name="ladder" id="ladder_n" value="불필요"><span>불필요</span></label>
+            </div>
+          </div>
+          <div class="field">
+            <span class="k">분해</span>
+            <div class="seg">
+              <label><input type="radio" name="disasm" id="disasm_y" value="필요"><span>필요</span></label>
+              <label><input type="radio" name="disasm" id="disasm_n" value="불필요"><span>불필요</span></label>
+            </div>
+          </div>
+        </div>
+        <p class="note">분해·압축은 추가비용 가능 → CX 조율</p>
+      </div>
+    </section>
+
+    <div class="skip">
+      <span>청소 없음이면 4·5·6 생략</span>
+      <label class="chip"><input type="checkbox" id="noClean"><span>청소 없음</span></label>
+    </div>
+
+    <div id="cleanBlock" class="wrap">
+      <section class="panel" id="sec-lvl">
+        <header><span class="num">4</span><h2>오염도<span class="req" style="color:var(--danger)">*</span></h2><span class="hint">청소 작업만</span></header>
+        <div class="body">
+          <div class="lvl" id="lvlBox"></div>
+          <div class="axis"><span>하하 · 양호</span><span>상상 · 심함</span></div>
+        </div>
+      </section>
+
+      <section class="panel" id="sec-scope">
+        <header><span class="num">5</span><h2>청소 범위</h2><span class="hint">기본 범위 외<br>추가되는 곳만 체크</span></header>
+        <div class="body">
+          <div class="row2">
+            <div class="field">
+              <label class="k" for="area">평수</label>
+              <div class="unit"><input type="text" id="area" inputmode="decimal" placeholder="0"><span>평</span></div>
+            </div>
+            <div class="field">
+              <span class="k">범위</span>
+              <div class="seg">
+                <label><input type="radio" name="scope" id="scope_a" value="전체"><span>전체</span></label>
+                <label><input type="radio" name="scope" id="scope_p" value="부분"><span>부분</span></label>
+              </div>
+            </div>
+          </div>
+          <div class="base">
+            <b>기본</b><span>바닥 · 화장실</span>
+            <span class="mini">
+              <button type="button" data-step="-1" data-for="baths" aria-label="화장실 줄이기">−</button>
+              <input type="text" id="baths" inputmode="numeric" placeholder="0" aria-label="화장실 개수">
+              <button type="button" data-step="1" data-for="baths" aria-label="화장실 늘리기">+</button>
+            </span>
+            <span>개 · 싱크대 상판</span>
+            <em>항상 포함</em>
+          </div>
+          <div class="field"><span class="k">공간</span><div class="chips" id="spBox"></div></div>
+          <div class="field"><span class="k">주방</span><div class="chips" id="kBox"></div></div>
+          <div class="field"><span class="k">가전·가구</span><div class="chips" id="fBox"></div></div>
+        </div>
+      </section>
+
+      <section class="panel" id="sec-cnote">
+        <header><span class="num">6</span><h2>청소 특이사항</h2><span class="hint">청소 작업만</span></header>
+        <div class="body"><textarea id="note_clean" rows="3" placeholder="예: 화장실 곰팡이 심함, 베란다 비둘기 배설물"></textarea></div>
+      </section>
+    </div>
+
+    <section class="panel" id="sec-note">
+      <header><span class="num">7</span><h2>특이사항</h2><span class="hint">고객 요청 · 작업 주의</span></header>
+      <div class="body"><textarea id="note" rows="3" placeholder="예: 안방 서랍 서류는 보관, 오후 3시 이전 종료 요청"></textarea></div>
+    </section>
+
+    <section class="panel" id="sec-photo">
+      <header><h2>사진·전송 확인</h2></header>
+      <div class="body">
+        <div class="chips" id="phBox"></div>
+        <div class="row2">
+          <div class="field">
+            <span class="k">0.5배 광각</span>
+            <div class="seg">
+              <label><input type="radio" name="wide" id="wide_y" value="O"><span>사용 O</span></label>
+              <label><input type="radio" name="wide" id="wide_n" value="X"><span>X</span></label>
+            </div>
+          </div>
+          <div class="field">
+            <label class="k" for="photoN">사진</label>
+            <div class="unit"><input type="text" id="photoN" inputmode="numeric" placeholder="0"><span>장</span></div>
+          </div>
+        </div>
+        <p class="privacy">개인정보(신분증·우편물·통장) 촬영 금지</p>
+      </div>
+    </section>
+
+    <p class="foot">작성 중인 내용은 이 폰에 자동 저장돼요. 이미지를 보낸 뒤 [새로 작성]으로 비우세요.</p>
+  </div>
+  </form>
+</div>
+
+<div class="dock">
+  <div class="dock-in">
+    <div class="prog" id="prog"><b>0/8</b>필수 항목</div>
+    <button type="button" class="primary" id="makeBtn">보고 이미지 만들기</button>
+  </div>
+</div>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="sheet-in" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div id="missView" hidden>
+      <div style="display:grid;gap:12px">
+        <h3 id="sheetTitle">빠진 필수 항목이 있어요</h3>
+        <ul class="miss" id="missList"></ul>
+        <p class="note">그대로 만들면 이미지에 빨간 '미기재'로 표시돼요.</p>
+        <div class="btns">
+          <button type="button" class="secondary" id="goFill">채우러 가기</button>
+          <button type="button" class="primary" id="forceMake">그래도 만들기</button>
+        </div>
+      </div>
+    </div>
+    <div id="imgView" hidden>
+      <div style="display:grid;gap:12px">
+        <h3>보고 이미지</h3>
+        <ol class="howto">
+          <li>아래 이미지를 <b>길게 눌러 저장</b>하거나 [이미지 저장]</li>
+          <li>카톡 대화방에서 사진으로 보내기</li>
+          <li>현장 사진도 같이 보내기</li>
+        </ol>
+        <img class="shot" id="shot" alt="작성한 현장 체크리스트 이미지">
+        <p class="status" id="status" role="status"></p>
+        <textarea class="fallback" id="fallbackText" hidden readonly aria-label="복사할 텍스트"></textarea>
+        <div class="btns">
+          <button type="button" class="primary" id="saveBtn" hidden>이미지 저장</button>
+          <button type="button" class="secondary" id="copyBtn">텍스트 복사</button>
+          <button type="button" class="secondary" id="closeBtn">닫기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const F = id => document.getElementById(id);
+  const v = id => (F(id)?.value || '').trim();
+  const on = id => !!F(id)?.checked;
+  const radio = name => { const r = document.querySelector(`input[name="${name}"]:checked`); return r ? r.value : ''; };
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  const WT = [
+    { id: 'wt_home', label: '가정폐기물' }, { id: 'wt_hoard', label: '쓰레기집' }, { id: 'wt_biz', label: '사업장폐기물' },
+    { id: 'wt_special', label: '특수청소' }, { id: 'wt_simple', label: '간단수거' },
+  ];
+  const COMP = [
+    { id: 'c_wood', label: '목재' }, { id: 'c_mixed', label: '혼합폐기물' }, { id: 'c_food', label: '음식물' },
+    { id: 'c_heavy', label: '중량물', sub: '2인 이상 운반' }, { id: 'c_liquid', label: '액체류' }, { id: 'c_metal', label: '고철' },
+    { id: 'c_contam', label: '오염물', sub: '포장 필요' }, { id: 'c_etc', label: '기타' },
+  ];
+  const LVL = ['하하', '하중', '하상', '중하', '중중', '중상', '상하', '상중', '상상'];
+  const SP = [
+    { id: 'sp_living', label: '거실' }, { id: 'sp_room', label: '방', x: { id: 'sp_room_n', ph: '개수', mode: 'numeric', suffix: '개' } },
+    { id: 'sp_veranda', label: '베란다' }, { id: 'sp_entry', label: '현관' }, { id: 'sp_window', label: '창틀' },
+  ];
+  const KIT = [
+    { id: 'k_sink', label: '개수대(싱크볼)' }, { id: 'k_range', label: '가스레인지·인덕션' }, { id: 'k_hood', label: '후드' },
+    { id: 'k_upper', label: '상부장' }, { id: 'k_lower', label: '하부장' }, { id: 'k_wall', label: '벽·타일' },
+  ];
+  const FUR = [
+    { id: 'f_fridge', label: '냉장고' }, { id: 'f_out', label: '가구 겉면' }, { id: 'f_in', label: '가구 내부' },
+    { id: 'f_etc', label: '기타', x: { id: 'f_etc_t', ph: '무엇인지', mode: 'text', wide: true } },
+  ];
+  const PH = [
+    { id: 'ph_out', label: '외관·주차·진입로' }, { id: 'ph_elev', label: '엘리베이터/계단' }, { id: 'ph_space', label: '공간별 전경' },
+    { id: 'ph_dirty', label: '오염 근접' }, { id: 'ph_height', label: '폐기물 높이' }, { id: 'ph_big', label: '대형 가구·가전' },
+  ];
+
+  const chip = (it) => {
+    const base = `<label class="chip"><input type="checkbox" id="${it.id}"><span>${esc(it.label)}</span></label>`;
+    if (!it.x) return base;
+    return `<span class="chip-x">${base}<input type="text" id="${it.x.id}" class="${it.x.wide ? 'wide' : ''}" inputmode="${it.x.mode}" placeholder="${esc(it.x.ph)}" data-auto="${it.id}" aria-label="${esc(it.label)} ${esc(it.x.ph)}"></span>`;
+  };
+  F('wtBox').innerHTML = WT.map(chip).join('');
+  F('spBox').innerHTML = SP.map(chip).join('');
+  F('kBox').innerHTML = KIT.map(chip).join('');
+  F('fBox').innerHTML = FUR.map(chip).join('');
+  F('phBox').innerHTML = PH.map(chip).join('');
+  F('compBox').innerHTML = COMP.map(c => `
+    <div class="comp-row">
+      <label class="chip"><input type="checkbox" id="${c.id}"><span>${esc(c.label)}${c.sub ? ` <small>(${esc(c.sub)})</small>` : ''}</span></label>
+      <input type="text" id="${c.id}_v" placeholder="${c.id === 'c_etc' ? '품목·양' : '% / 차'}" data-auto="${c.id}" aria-label="${esc(c.label)} 비율 또는 양">
+    </div>`).join('');
+  F('lvlBox').innerHTML = LVL.map((l, i) => `<label class="t${Math.floor(i / 3) + 1}"><input type="radio" name="lvl" id="lvl_${i}" value="${l}"><span>${l}</span></label>`).join('');
+  F('wasteQuick').innerHTML = ['0.5', '1', '1.5', '2', '3'].map(n => `<button type="button" data-set="${n}" data-for="waste">${n}차</button>`).join('');
+
+  const todayStr = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+
+  // ---------- draft (this phone only) ----------
+  const KEY = 'site-checklist-draft-v1';
+  const allInputs = () => [...document.querySelectorAll('#f input, #f textarea')];
+  const saveDraft = () => {
+    const s = {};
+    allInputs().forEach(el => { if (!el.id) return; s[el.id] = (el.type === 'checkbox' || el.type === 'radio') ? el.checked : el.value; });
+    try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {}
+  };
+  const loadDraft = () => {
+    let s = null;
+    try { s = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
+    if (!s) return false;
+    allInputs().forEach(el => {
+      if (!(el.id in s)) return;
+      if (el.type === 'checkbox' || el.type === 'radio') el.checked = !!s[el.id]; else el.value = s[el.id];
+    });
+    return true;
+  };
+
+  // ---------- helpers ----------
+  const num = s => { const n = parseFloat(String(s).replace(/,/g, '')); return isNaN(n) ? 0 : n; };
+  const fmtStep = (n, step) => (Math.abs(step) < 1 ? (Math.round(n * 10) / 10).toFixed(1) : String(Math.round(n)));
+
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-step],[data-set]');
+    if (!b) return;
+    const inp = F(b.dataset.for);
+    if (b.dataset.set) inp.value = b.dataset.set;
+    else { const st = parseFloat(b.dataset.step); inp.value = fmtStep(Math.max(0, num(inp.value) + st), st); }
+    sync(); saveDraft();
+  });
+
+  const sync = () => {
+    F('cleanBlock').hidden = on('noClean');
+    const far = radio('park') === '거리 있음'; F('parkDist').disabled = !far;
+    const miss = missing();
+    const done = REQ.length - miss.length;
+    F('prog').innerHTML = `<b>${done}/${REQ.length}</b>필수 항목`;
+    F('prog').classList.toggle('done', miss.length === 0);
+  };
+
+  document.getElementById('f').addEventListener('input', e => {
+    const t = e.target;
+    if (t.dataset.auto && t.value.trim()) F(t.dataset.auto).checked = true;
+    sync(); saveDraft();
+  });
+  document.getElementById('f').addEventListener('change', () => { sync(); saveDraft(); });
+
+  // ---------- required ----------
+  const REQ = [
+    { label: '날짜', sec: 'sec-basic', ok: () => v('date') },
+    { label: '주소', sec: 'sec-basic', ok: () => v('gu') && v('dong') },
+    { label: '작업 유형', sec: 'sec-type', ok: () => WT.some(t => on(t.id)) },
+    { label: '실작업인원', sec: 'sec-basic', ok: () => num(v('crew')) > 0 },
+    { label: '폐기물 양', sec: 'sec-waste', ok: () => v('waste') },
+    { label: '엘리베이터', sec: 'sec-route', ok: () => radio('elev') },
+    { label: '주차', sec: 'sec-route', ok: () => radio('park') },
+    { label: '오염도', sec: 'sec-lvl', ok: () => on('noClean') || radio('lvl') },
+  ];
+  const missing = () => REQ.filter(r => !r.ok());
+
+  // ---------- collect ----------
+  const picked = (list) => list.filter(it => on(it.id)).map(it => {
+    if (!it.x) return it.label;
+    const x = v(it.x.id);
+    if (!x) return it.label;
+    return it.x.suffix ? `${it.label} ${x}${it.x.suffix}` : `${it.label}(${x})`;
+  });
+  const collect = () => {
+    const d = {};
+    d.date = v('date'); d.gu = v('gu'); d.dong = v('dong');
+    d.crew = v('crew'); d.trucks = v('trucks');
+    d.types = WT.filter(t => on(t.id)).map(t => t.label);
+    d.waste = v('waste');
+    d.comp = COMP.filter(c => on(c.id)).map(c => { const a = v(c.id + '_v'); return a ? `${c.label} ${a}` : c.label; });
+    d.elev = radio('elev'); d.floor = v('floor');
+    d.park = radio('park'); d.parkDist = v('parkDist');
+    d.ladder = radio('ladder'); d.disasm = radio('disasm');
+    d.noClean = on('noClean'); d.lvl = radio('lvl');
+    d.area = v('area'); d.scope = radio('scope'); d.baths = v('baths');
+    d.sp = picked(SP); d.kit = picked(KIT); d.fur = picked(FUR);
+    d.noteClean = v('note_clean'); d.note = v('note');
+    d.ph = picked(PH); d.wide = radio('wide'); d.photoN = v('photoN');
+    const n = new Date();
+    d.sent = `${n.getMonth() + 1}/${n.getDate()} ${String(n.getHours()).padStart(2, '0')}:${String(n.getMinutes()).padStart(2, '0')}`;
+    return d;
+  };
+  const dateLabel = s => {
+    if (!s) return '';
+    const [y, m, dd] = s.split('-').map(Number);
+    const w = '일월화수목금토'[new Date(y, m - 1, dd).getDay()];
+    return `${m}월 ${dd}일 (${w})`;
+  };
+
+  // rows: [label, value, kind]  kind: 'req' -> missing shows 미기재, 'opt' -> missing shows 없음/-
+  const rowsOf = d => {
+    const route = [
+      ['엘리베이터', d.elev ? `${d.elev}${d.floor ? ` · ${d.floor}층` : ''}` : (d.floor ? `미기재 · ${d.floor}층` : ''), 'req'],
+      ['주차', d.park ? (d.park === '거리 있음' ? `거리 있음${d.parkDist ? ` (약 ${d.parkDist}m)` : ''}` : d.park) : '', 'req'],
+      ['사다리차', d.ladder, 'opt'],
+      ['분해', d.disasm, 'opt'],
+    ];
+    const scope = [
+      ['평수', d.area || d.scope ? `${d.area ? d.area + '평' : ''}${d.area && d.scope ? ' · ' : ''}${d.scope}` : '', 'opt'],
+      ['기본', `바닥 · 화장실 ${d.baths || '?'}개 · 싱크대 상판`, 'opt'],
+      ['공간', d.sp.join(', '), 'opt'],
+      ['주방', d.kit.join(', '), 'opt'],
+      ['가전·가구', d.fur.join(', '), 'opt'],
+    ];
+    const photo = [
+      ['촬영', d.ph.join(', '), 'opt'],
+      ['사진', `${d.photoN ? d.photoN + '장' : '장수 미기재'} · 0.5배 광각 ${d.wide || '-'}`, 'opt'],
+    ];
+    return { route, scope, photo };
+  };
+
+  // ---------- text summary ----------
+  const textOf = d => {
+    const R = rowsOf(d);
+    const show = (val, kind) => val || (kind === 'req' ? '미기재' : '-');
+    const L = [];
+    L.push(`[현장 체크리스트] ${dateLabel(d.date) || '날짜 미기재'}`);
+    L.push(`주소: ${d.gu || d.dong ? `${d.gu}구 ${d.dong}동` : '미기재'}`);
+    L.push(`작업: ${d.types.join(', ') || '미기재'}`);
+    L.push(`실작업인원: ${d.crew || '?'}명 / 적재가능차량: ${d.trucks || '?'}대`);
+    L.push('');
+    L.push(`1. 폐기물 양: ${d.waste ? d.waste + '차' : '미기재'}`);
+    L.push(`2. 성상: ${d.comp.join(' / ') || '-'}`);
+    L.push(`3. 동선: ${R.route.map(([k, val, kind]) => `${k} ${show(val, kind)}`).join(' / ')}`);
+    if (d.noClean) L.push('4·5·6. 청소 없음');
+    else {
+      L.push(`4. 오염도: ${d.lvl || '미기재'}`);
+      L.push(`5. 청소범위: ${R.scope.map(([k, val, kind]) => `${k} ${show(val, kind)}`).join(' / ')}`);
+      L.push(`6. 청소 특이사항: ${d.noteClean || '-'}`);
+    }
+    L.push(`7. 특이사항: ${d.note || '-'}`);
+    L.push(`사진: ${R.photo.map(([k, val]) => `${k} ${val || '-'}`).join(' / ')}`);
+    L.push(`(작성 ${d.sent})`);
+    return L.join('\n');
+  };
+
+  // ---------- image ----------
+  const FONT = '"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif';
+  const C = { paper: '#FFFFFF', ink: '#17231E', muted: '#5B6A63', line: '#DCE3DF', brand: '#1F5240', brandSoft: '#E3EEE8',
+    onBrandMuted: '#BFD9CC', danger: '#B3261E', dangerSoft: '#FBEAE8', low: '#E6F1EA', mid: '#F7EDD2', high: '#F7DEDA' };
+  const fnt = (w, s) => `${w} ${s}px ${FONT}`;
+
+  const wrapLines = (ctx, text, maxW) => {
+    const out = [];
+    for (const para of String(text).split('\n')) {
+      let line = '';
+      for (const tk of para.split(/(\s+)/)) {
+        if (!tk) continue;
+        if (ctx.measureText(line + tk).width <= maxW) { line += tk; continue; }
+        if (line.trim()) { out.push(line.trimEnd()); line = ''; }
+        for (const ch of tk.replace(/^\s+/, '')) {
+          if (line && ctx.measureText(line + ch).width > maxW) { out.push(line); line = ch; } else line += ch;
+        }
+      }
+      out.push(line.trimEnd());
+    }
+    return out;
+  };
+
+  const draw = (ctx, d) => {
+    const W = 1080, P = 56, R = rowsOf(d);
+    let y = 0;
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = C.paper; ctx.fillRect(0, 0, W, ctx.canvas.height);
+
+    // header band
+    ctx.fillStyle = C.brand; ctx.fillRect(0, 0, W, 196);
+    ctx.fillStyle = C.onBrandMuted; ctx.font = fnt(600, 26); ctx.fillText('현장 → 계약관리팀(CX)', P, 66);
+    ctx.textAlign = 'right'; ctx.font = fnt(500, 24); ctx.fillText(`전송 ${d.sent}`, W - P, 66);
+    ctx.fillStyle = '#FFFFFF'; ctx.font = fnt(700, 34); ctx.fillText(dateLabel(d.date) || '날짜 미기재', W - P, 146);
+    ctx.textAlign = 'left'; ctx.font = fnt(700, 54); ctx.fillText('현장 체크리스트', P, 146);
+    y = 196;
+
+    // address + types
+    y += 74;
+    const addr = d.gu || d.dong ? `${d.gu ? d.gu + '구' : '?구'} ${d.dong ? d.dong + '동' : '?동'}` : '주소 미기재';
+    ctx.fillStyle = d.gu && d.dong ? C.ink : C.danger; ctx.font = fnt(700, 46); ctx.fillText(addr, P, y);
+    y += 28;
+    let x = P; const pillH = 50; ctx.font = fnt(600, 26);
+    const types = d.types.length ? d.types : ['작업 유형 미기재'];
+    for (const t of types) {
+      const w = ctx.measureText(t).width + 40;
+      if (x + w > W - P) { x = P; y += pillH + 10; }
+      ctx.fillStyle = d.types.length ? C.brandSoft : C.dangerSoft; roundRect(ctx, x, y, w, pillH, 25); ctx.fill();
+      ctx.fillStyle = d.types.length ? C.brand : C.danger; ctx.fillText(t, x + 20, y + 34);
+      x += w + 10;
+    }
+    y += pillH + 30;
+
+    // stat tiles
+    const gap = 16, tw = (W - P * 2 - gap * 2) / 3, th = 150;
+    const tiles = [
+      ['폐기물 양 (1톤 기준)', d.waste ? `${d.waste}차` : '미기재', !d.waste],
+      ['오염도', d.noClean ? '청소 없음' : (d.lvl || '미기재'), !d.noClean && !d.lvl],
+      ['인원 · 적재차량', `${d.crew || '?'}명 · ${d.trucks || '?'}대`, !d.crew],
+    ];
+    tiles.forEach(([k, val, bad], i) => {
+      const tx = P + i * (tw + gap);
+      ctx.fillStyle = bad ? C.dangerSoft : C.brandSoft; roundRect(ctx, tx, y, tw, th, 18); ctx.fill();
+      ctx.fillStyle = C.muted; ctx.font = fnt(600, 22); ctx.fillText(k, tx + 22, y + 44);
+      ctx.fillStyle = bad ? C.danger : C.ink; ctx.font = fnt(700, val.length > 7 ? 34 : 46);
+      ctx.fillText(val, tx + 22, y + 116, tw - 44);
+    });
+    y += th + 34;
+
+    const section = (n, title) => {
+      ctx.fillStyle = C.brand; ctx.beginPath(); ctx.arc(P + 20, y + 20, 20, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#FFFFFF'; ctx.font = fnt(700, 22); ctx.textAlign = 'center'; ctx.fillText(n, P + 20, y + 28); ctx.textAlign = 'left';
+      ctx.fillStyle = C.ink; ctx.font = fnt(700, 32); ctx.fillText(title, P + 56, y + 32);
+      y += 54;
+      ctx.fillStyle = C.brand; ctx.fillRect(P, y, W - P * 2, 3); y += 3;
+    };
+    const KX = P, VX = P + 210, VW = W - P - VX;
+    const row = (k, val, kind) => {
+      const empty = !val;
+      const text = empty ? (kind === 'req' ? '미기재' : '-') : val;
+      ctx.font = fnt(500, 30);
+      const lines = wrapLines(ctx, text, VW);
+      const h = Math.max(1, lines.length) * 44 + 28;
+      ctx.fillStyle = C.muted; ctx.font = fnt(600, 26); ctx.fillText(k, KX, y + 44);
+      ctx.fillStyle = empty ? (kind === 'req' ? C.danger : C.muted) : C.ink; ctx.font = fnt(empty ? 600 : 500, 30);
+      lines.forEach((ln, i) => ctx.fillText(ln, VX, y + 44 + i * 44));
+      y += h;
+      ctx.fillStyle = C.line; ctx.fillRect(P, y, W - P * 2, 1);
+    };
+    const block = (k, text) => {
+      ctx.font = fnt(500, 30);
+      const lines = wrapLines(ctx, text || '-', W - P * 2);
+      ctx.fillStyle = text ? C.ink : C.muted;
+      lines.forEach((ln, i) => ctx.fillText(ln, P, y + 46 + i * 44));
+      y += lines.length * 44 + 30;
+    };
+
+    section('2', '폐기물 성상');
+    row('품목', d.comp.join('  ·  '), 'opt');
+    y += 34;
+
+    section('3', '운반 동선');
+    R.route.forEach(r => row(...r));
+    y += 34;
+
+    if (d.noClean) {
+      ctx.fillStyle = C.dangerSoft; roundRect(ctx, P, y, W - P * 2, 76, 16); ctx.fill();
+      ctx.fillStyle = C.danger; ctx.font = fnt(700, 30); ctx.fillText('청소 없음 → 4·5·6 생략', P + 28, y + 50);
+      y += 76 + 34;
+    } else {
+      section('4', '오염도');
+      y += 18;
+      const cw = (W - P * 2 - 8 * 8) / 9;
+      LVL.forEach((l, i) => {
+        const cx = P + i * (cw + 8);
+        const sel = d.lvl === l;
+        ctx.fillStyle = [C.low, C.mid, C.high][Math.floor(i / 3)];
+        roundRect(ctx, cx, y, cw, 76, 12); ctx.fill();
+        if (sel) { ctx.lineWidth = 5; ctx.strokeStyle = C.ink; roundRect(ctx, cx + 2.5, y + 2.5, cw - 5, 71, 10); ctx.stroke(); }
+        ctx.fillStyle = sel ? C.ink : C.muted; ctx.font = fnt(sel ? 700 : 500, 26); ctx.textAlign = 'center';
+        ctx.fillText(l, cx + cw / 2, y + 48); ctx.textAlign = 'left';
+      });
+      y += 76;
+      if (!d.lvl) { y += 40; ctx.fillStyle = C.danger; ctx.font = fnt(600, 26); ctx.fillText('미기재', P, y); }
+      y += 52;
+
+      section('5', '청소 범위');
+      R.scope.forEach(r => row(...r));
+      y += 34;
+
+      section('6', '청소 특이사항');
+      block('', d.noteClean);
+      y += 14;
+    }
+
+    section('7', '특이사항');
+    block('', d.note);
+    y += 14;
+
+    section('·', '사진');
+    R.photo.forEach(r => row(...r));
+    y += 40;
+
+    ctx.fillStyle = C.danger; ctx.font = fnt(600, 24); ctx.fillText('개인정보(신분증·우편물·통장) 촬영 금지', P, y);
+    y += 56;
+    return Math.ceil(y);
+  };
+
+  function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+  }
+
+  const loadFonts = async (text) => {
+    if (!document.fonts || !document.fonts.load) return;
+    const sample = text + '0123456789·→()%/';
+    const jobs = [400, 500, 600, 700].map(w => document.fonts.load(`${w} 30px "IBM Plex Sans KR"`, sample).catch(() => {}));
+    await Promise.race([Promise.all(jobs), new Promise(r => setTimeout(r, 4000))]);
+  };
+
+  let lastBlob = null, lastText = '', lastName = 'site-checklist.png';
+  const build = async () => {
+    const d = collect();
+    lastText = textOf(d);
+    await loadFonts(lastText + '현장 체크리스트 계약관리팀 미기재 품목 엘리베이터 주차 사다리차 분해 평수 기본 공간 주방 가전가구 촬영 사진 개인정보 신분증 우편물 통장 금지 전송 성상 운반 동선 오염도 청소 범위 특이사항 인원 적재차량 폐기물 양 톤 기준 하중상 없음 생략' + LVL.join(''));
+    const meas = document.createElement('canvas'); meas.width = 1080; meas.height = 10;
+    const H = draw(meas.getContext('2d'), d);
+    const cv = document.createElement('canvas'); cv.width = 1080; cv.height = H;
+    draw(cv.getContext('2d'), d);
+    F('shot').src = cv.toDataURL('image/png');
+    lastBlob = await new Promise(r => cv.toBlob(r, 'image/png'));
+    const safe = s => s.replace(/[\\/:*?"<>|\s]/g, '');
+    lastName = `현장체크_${d.date || todayStr()}_${safe(d.gu)}${safe(d.dong)}.png`;
+  };
+
+  // ---------- sheet ----------
+  const sheet = F('sheet');
+  const openSheet = (view) => {
+    F('missView').hidden = view !== 'miss'; F('imgView').hidden = view !== 'img';
+    F('status').textContent = ''; F('status').classList.remove('err'); F('fallbackText').hidden = true;
+    sheet.hidden = false; document.body.style.overflow = 'hidden';
+  };
+  const closeSheet = () => { sheet.hidden = true; document.body.style.overflow = ''; };
+  const showImage = async () => {
+    F('makeBtn').disabled = true; F('makeBtn').textContent = '만드는 중…';
+    try { await build(); openSheet('img'); }
+    catch (e) { openSheet('img'); F('status').textContent = '이미지를 만들지 못했어요. [텍스트 복사]로 보내주세요.'; F('status').classList.add('err'); }
+    finally { F('makeBtn').disabled = false; F('makeBtn').textContent = '보고 이미지 만들기'; }
+  };
+
+  F('makeBtn').addEventListener('click', () => {
+    const m = missing();
+    if (m.length) {
+      F('missList').innerHTML = m.map(r => `<li>${esc(r.label)}</li>`).join('');
+      F('goFill').dataset.target = m[0].sec;
+      openSheet('miss');
+    } else showImage();
+  });
+  F('forceMake').addEventListener('click', showImage);
+  F('goFill').addEventListener('click', () => {
+    closeSheet();
+    const t = F(F('goFill').dataset.target);
+    if (t) t.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+  });
+  F('closeBtn').addEventListener('click', closeSheet);
+  sheet.addEventListener('click', e => { if (e.target === sheet) closeSheet(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !sheet.hidden) closeSheet(); });
+
+  F('copyBtn').addEventListener('click', () => {
+    const st = F('status');
+    const fallback = () => {
+      const ta = F('fallbackText'); ta.value = lastText || textOf(collect()); ta.hidden = false; ta.focus(); ta.select();
+      st.textContent = '복사가 막혀 있어요. 아래 글을 길게 눌러 전체 복사해 주세요.'; st.classList.remove('err');
+    };
+    try {
+      navigator.clipboard.writeText(lastText || textOf(collect()))
+        .then(() => { st.textContent = '텍스트를 복사했어요. 카톡에 붙여넣기 하세요.'; st.classList.remove('err'); })
+        .catch(fallback);
+    } catch (e) { fallback(); }
+  });
+
+  let dl = null;
+  (async () => {
+    try { dl = window.claude && window.claude.use ? await window.claude.use('downloads') : null; } catch (e) { dl = null; }
+    if (dl) F('saveBtn').hidden = false;
+  })();
+  F('saveBtn').addEventListener('click', async () => {
+    const st = F('status');
+    if (!dl || !lastBlob) return;
+    try {
+      await dl.save({ filename: lastName, data: lastBlob });
+      st.textContent = '저장했어요. 카톡에서 사진으로 보내주세요.'; st.classList.remove('err');
+    } catch (e) {
+      const c = e && e.code;
+      if (c === 'declined') st.textContent = '저장을 취소했어요.';
+      else if (c === 'rate_limited') st.textContent = '잠시 후 다시 눌러주세요.';
+      else { st.textContent = '여기서는 저장 버튼이 안 돼요. 이미지를 길게 눌러 저장해 주세요.'; F('saveBtn').hidden = true; }
+      st.classList.toggle('err', c !== 'declined');
+    }
+  });
+
+  // ---------- reset ----------
+  F('resetBtn').addEventListener('click', () => { F('resetBox').hidden = false; });
+  F('resetNo').addEventListener('click', () => { F('resetBox').hidden = true; });
+  F('resetYes').addEventListener('click', () => {
+    F('f').reset();
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    F('date').value = todayStr();
+    F('resetBox').hidden = true;
+    sync(); window.scrollTo(0, 0);
+  });
+
+  // ---------- init ----------
+  if (!loadDraft() || !v('date')) F('date').value = todayStr();
+  sync();
+})();
+</script>
+
+</body>
+</html>
