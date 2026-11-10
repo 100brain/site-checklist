@@ -486,7 +486,7 @@ input:focus-visible, textarea:focus-visible, button:focus-visible { outline: 2px
   F('compBox').innerHTML = COMP.map(c => `
     <div class="comp-row">
       <label class="chip"><input type="checkbox" id="${c.id}"><span>${esc(c.label)}${c.sub ? ` <small>(${esc(c.sub)})</small>` : ''}</span></label>
-      <input type="text" id="${c.id}_v" placeholder="${c.id === 'c_etc' ? '품목·양' : '% / 차'}" data-auto="${c.id}" aria-label="${esc(c.label)} 비율 또는 양">
+      <input type="text" id="${c.id}_v" placeholder="${c.id === 'c_etc' ? '품목·양' : '숫자=% · 차'}" data-auto="${c.id}" aria-label="${esc(c.label)} 비율 또는 양">
     </div>`).join('');
   F('lvlBox').innerHTML = LVL.map((l, i) => `<label class="t${Math.floor(i / 3) + 1}"><input type="radio" name="lvl" id="lvl_${i}" value="${l}"><span>${l}</span></label>`).join('');
   F('wasteQuick').innerHTML = ['0.5', '1', '1.5', '2', '3'].map(n => `<button type="button" data-set="${n}" data-for="waste">${n}차</button>`).join('');
@@ -514,6 +514,8 @@ input:focus-visible, textarea:focus-visible, button:focus-visible { outline: 2px
 
   // ---------- helpers ----------
   const num = s => { const n = parseFloat(String(s).replace(/,/g, '')); return isNaN(n) ? 0 : n; };
+  // 성상: 숫자만 적으면 % 자동 부착 (예: 30 -> 30%, '0.3차'·'30%'는 그대로)
+  const pct = s => /^\d+(\.\d+)?$/.test(s) ? s + '%' : s;
   const fmtStep = (n, step) => (Math.abs(step) < 1 ? (Math.round(n * 10) / 10).toFixed(1) : String(Math.round(n)));
 
   document.addEventListener('click', e => {
@@ -539,7 +541,11 @@ input:focus-visible, textarea:focus-visible, button:focus-visible { outline: 2px
     if (t.dataset.auto && t.value.trim()) F(t.dataset.auto).checked = true;
     sync(); saveDraft();
   });
-  document.getElementById('f').addEventListener('change', () => { sync(); saveDraft(); });
+  document.getElementById('f').addEventListener('change', e => {
+    const t = e.target;
+    if (t.closest && t.closest('#compBox') && t.type === 'text') t.value = pct(t.value.trim());
+    sync(); saveDraft();
+  });
 
   // ---------- required ----------
   const REQ = [
@@ -567,7 +573,7 @@ input:focus-visible, textarea:focus-visible, button:focus-visible { outline: 2px
     d.crew = v('crew'); d.trucks = v('trucks');
     d.types = WT.filter(t => on(t.id)).map(t => t.label);
     d.waste = v('waste');
-    d.comp = COMP.filter(c => on(c.id)).map(c => { const a = v(c.id + '_v'); return a ? `${c.label} ${a}` : c.label; });
+    d.comp = COMP.filter(c => on(c.id)).map(c => { const a = pct(v(c.id + '_v')); return a ? `${c.label} ${a}` : c.label; });
     d.elev = radio('elev'); d.floor = v('floor');
     d.park = radio('park'); d.parkDist = v('parkDist');
     d.ladder = radio('ladder'); d.disasm = radio('disasm');
